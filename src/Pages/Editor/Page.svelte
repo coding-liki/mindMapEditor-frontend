@@ -1,17 +1,14 @@
 <script>
     import { onMount } from 'svelte';
 	import BasePage from "../BasePage.svelte";
+    import EditorField from "../../Svg/EditorField"
     import Node from "./Node.svelte";
+
+    export let editorField = new EditorField(100, 100);
 	export let pageName;
 	export let enable = false;
     export let map;
-    export let zoom = 1;
-    let previousZoom = 1;
     export let position = {x: 0, y: 0};
-    let viewBox = {
-        width: 100,
-        height: 100
-    };
 
     const MOVE_MODE = 'move';
     const ZOOM_MODE = 'zoom';
@@ -21,70 +18,32 @@
 
     let mode = MOVE_MODE;
     let mouseMode = MOUSE_UP;
+    let viewBoxString = editorField.getViewBoxString();
 
-    let mouseInitPosition = {
-        x: 0,
-        y: 0
-    };
-    let lastMousePosition = {
-        x: 0,
-        y: 0
-    };
-    
     let mouseDown = (event) => {
         mouseMode = MOUSE_DOWN;
 
-        mouseInitPosition.x = event.offsetX;
-        mouseInitPosition.y = event.offsetY;
-        
-        lastMousePosition.x = mouseInitPosition.x;
-        lastMousePosition.y = mouseInitPosition.y;
-
-        console.log(lastMousePosition);
+        editorField.updateMousePostion(event.offsetX, event.offsetY);
+        editorField.freezeMousePosition();
     }
 
-    
     let mouseUp = (event) => {
         mouseMode = MOUSE_UP;
-        previousZoom = zoom;
+        editorField.freezeZoom();
     }
 
     let mouseMove = (event) => {
-
-        let offsetX = event.offsetX - lastMousePosition.x;
-        let offsetY = event.offsetY - lastMousePosition.y;
-
-        lastMousePosition.x = event.offsetX;
-        lastMousePosition.y = event.offsetY;
         
+        editorField.updateMousePostion(event.offsetX, event.offsetY);
         if(mouseMode == MOUSE_DOWN) {
             switch (mode) {
                 case MOVE_MODE:
-                    position.x -= offsetX;
-                    position.y -= offsetY;
+                    editorField.movePositionByMousePosition();
+                    viewBoxString = editorField.getViewBoxString()
                     break;
                 case ZOOM_MODE:
-                    let fullOffsetX = event.offsetX - mouseInitPosition.x;
-                    let fullOffsetY = event.offsetY - mouseInitPosition.y;
-                    
-                    let dist = Math.sqrt(fullOffsetX*fullOffsetX+fullOffsetY*fullOffsetY);
-                    if(fullOffsetX >0  ){
-                        dist = -dist;
-                    }
-
-                    if(zoom < 1){
-                        zoom = previousZoom + dist*zoom*0.001;
-                    } else {
-                        zoom = previousZoom +  dist/zoom*0.001;
-                    }
-                    // zoom = zoom + fullOffsetX/zoom*0.01;
-                    if(zoom < 0) {
-                        zoom = 0;
-                    } else if(zoom > 100){
-                        zoom =100;
-                    }
-
-                    console.log(zoom);
+                    editorField.updateZoomByMousePosition();
+                    viewBoxString = editorField.getViewBoxString()
                     break;
                 default:
                     break;
@@ -95,9 +54,10 @@
     export let svgElement;
 
     let onWindowResize = () => {
+    
         if(svgElement){
-            viewBox.width = svgElement.parentNode.offsetWidth;
-            viewBox.height = svgElement.parentNode.offsetHeight;
+            editorField.updateViewBox(svgElement.parentNode.offsetWidth, svgElement.parentNode.offsetHeight);
+            viewBoxString = editorField.getViewBoxString();
         }
     }
 
@@ -113,8 +73,8 @@
     }
 </script>
 
-<BasePage bind:enable={enable} on:enabled={()=>{onWindowResize(); }} bind:pageName pageNameSet="Editor">
-	<svg bind:this={svgElement} width="100%" height="100%" viewBox="{position.x*zoom} {position.y*zoom} {zoom*viewBox.width} {zoom*viewBox.height}" on:contextmenu={modeToggle} on:mousedown={mouseDown} on:mouseup={mouseUp} on:mousemove={mouseMove}>
+<BasePage bind:enable={enable} on:afterEnabled={()=>{onWindowResize(); }} bind:pageName pageNameSet="Editor">
+	<svg bind:this={svgElement} width="100%" height="100%" viewBox="{viewBoxString}" on:contextmenu={modeToggle} on:mousedown={mouseDown} on:mouseup={mouseUp} on:mousemove={mouseMove}>
         <rect x="0" y="0" width="30" height="30" stroke="black" fill="transparent" stroke-width="2"/>
     </svg> 
 </BasePage>

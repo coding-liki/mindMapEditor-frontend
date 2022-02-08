@@ -1,33 +1,37 @@
 export class Vector {
     x = 0;
     y = 0;
-    constructor(x,y){
+    constructor(x = 0,y = 0){
         this.x = x;
         this.y = y;
     }
 
-    add = (b) => {
+    length(){
+        return Math.sqrt(this.x*this.x+this.y*this.y);
+    }
+
+    add(b) {
         this.x += b.x;
         this.y += b.y;
     
         return this;
     }
 
-    sub = (b) => {
+    sub (b) {
         this.x -= b.x;
         this.y -= b.y;
 
         return this;
     }
 
-    mul = (scalar) => {
+    mul (scalar) {
         this.x *= scalar;
         this.y *= scalar;
     
         return this;
     }
 
-    div = (scalar) => {
+    div(scalar) {
         this.x /= scalar;
         this.y /= scalar;
 

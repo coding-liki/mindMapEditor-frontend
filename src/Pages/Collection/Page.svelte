@@ -3,13 +3,15 @@
 	import {api} from "../../Api/MindMap/Api.js";
 	export let pageName;
 	export let enable = false;
-	let collection;
+	let collection = [];
 	function updateCollection(){
 		collection = api.list();
+
+		console.log(collection);
 	}
 </script>
 
-<BasePage bind:enable={enable} bind:pageName pageNameSet="Collection" on:enabled={updateCollection}>
+<BasePage bind:enable={enable} bind:pageName pageNameSet="Collection" on:beforeEnabled={updateCollection}>
 	{#await collection}
 		<p>...Загружаем</p>
 	{:then result} 

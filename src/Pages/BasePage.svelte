@@ -12,14 +12,22 @@
             pageName = pageNameSet
             console.log(pageName, pageNameSet);
         }
+
+        if(enable !== lastEnable){
+            if(enable){
+                dispatch('beforeEnabled');
+            } else {
+                dispatch('beforeDisabled');
+            }
+        }
 	});
 
     afterUpdate(() => {
         if(enable !== lastEnable){
             if(enable){
-                dispatch('enabled');
+                dispatch('afterEnabled');
             } else {
-                dispatch('disabled');
+                dispatch('afterDisabled');
             }
             lastEnable = enable;
         }
