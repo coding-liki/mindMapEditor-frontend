@@ -37,6 +37,21 @@ export class Vector {
 
         return this;
     }
+    rotate(center, angle){
+        let sin = Math.sin(angle)
+        let cos = Math.cos(angle)
+
+        this.sub(center);
+
+        let newX = this.x*cos - this.y*sin;
+        let newY = this.x*sin + this.y*cos;
+
+        this.x = newX;
+        this.y = newY;
+        this.add(center);
+
+        return this;
+    }
 
     clone() {
         return new Vector(this.x, this.y);
