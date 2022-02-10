@@ -7,7 +7,7 @@ export default class EditorField {
     viewBox = new Vector();
     mousePosition = new Vector();
     initMousePosition = new Vector();
-    lastMousePosition = new Vector()
+    lastMousePosition = new Vector();
     initPosition = new Vector();
 
     constructor(width, height){
@@ -57,7 +57,7 @@ export default class EditorField {
         let fullOffset = this.mousePosition.clone().sub(this.initMousePosition);
         let dist = -fullOffset.x;
 
-        let windowPosition = this.initMousePosition.clone().sub(this.initPosition).mul(this.zoom);
+        // let windowPosition = this.initMousePosition.clone().add(this.initPosition).mul(this.zoom);//.add(this.initPosition);
 
 
         if(this.zoom < 1){
@@ -72,9 +72,9 @@ export default class EditorField {
             this.zoom =100;
         }
 
-        let newWindowPosition = this.initMousePosition.clone().sub(this.initPosition).mul(this.zoom);
+        // let newWindowPosition = this.initMousePosition.clone().add(this.initPosition).mul(this.zoom);
 
-        this.position = this.initPosition.clone().add(newWindowPosition.sub(windowPosition));
+        // this.position.add(newWindowPosition.sub(windowPosition).mul(2));
         return this;
     }
     
