@@ -11,7 +11,9 @@
 		nodes: [{
 			x: window.innerWidth/2,
 			y: window.innerHeight/2-115,
-			text: "First"
+			text: "First",
+            path: "",
+            textElement: null
 		}]
 	}
 	let headerButtons = [

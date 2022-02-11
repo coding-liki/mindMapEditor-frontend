@@ -30,7 +30,7 @@ export default class EditorField {
         return zoomedPosition.x +" "+zoomedPosition.y+" "+zoomedViewBox.x+" "+zoomedViewBox.y;
     }
 
-    updateMousePostion(x,y){
+    updateMousePosition(x, y){
         this.lastMousePosition = this.mousePosition.clone();
         this.mousePosition.x = x;
         this.mousePosition.y = y;
@@ -56,10 +56,11 @@ export default class EditorField {
     updateZoomByMousePosition(){
         let fullOffset = this.mousePosition.clone().sub(this.initMousePosition);
         let dist = -fullOffset.x;
+        // let lastZoom = this.zoom;
 
-        // let windowPosition = this.initMousePosition.clone().add(this.initPosition).mul(this.zoom);//.add(this.initPosition);
+        // let zoomOffset = this.initMousePosition.clone().add(this.initPosition);
 
-
+        this.position = this.initPosition.clone().sub(this.initMousePosition);
         if(this.zoom < 1){
             this.zoom = this.previousZoom + dist*this.zoom*0.001;
         } else {
@@ -71,10 +72,13 @@ export default class EditorField {
         } else if(this.zoom > 100){
             this.zoom =100;
         }
+        // let zoomOffsetLength = zoomOffset.length();
 
-        // let newWindowPosition = this.initMousePosition.clone().add(this.initPosition).mul(this.zoom);
+        // zoomOffset.norm().mul(zoomOffsetLength*this.zoom )
+        // mouseFieldPosition.mul(this.zoom - this.previousZoom);
+        //
+        this.position.add(this.initMousePosition);
 
-        // this.position.add(newWindowPosition.sub(windowPosition).mul(2));
         return this;
     }
     

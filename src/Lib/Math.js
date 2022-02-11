@@ -10,6 +10,12 @@ export class Vector {
         return Math.sqrt(this.x*this.x+this.y*this.y);
     }
 
+    norm() {
+        this.div(this.length());
+
+        return this;
+    }
+
     add(b) {
         this.x += b.x;
         this.y += b.y;
