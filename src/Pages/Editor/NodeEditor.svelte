@@ -1,7 +1,13 @@
 <script>
+    import {afterUpdate} from "svelte";
+
     export let value = "";
     export let hidden = true;
 </script>
-{#if !hidden}
-    <textarea  bind:value></textarea>
-{/if}
+    <textarea class="{hidden ? 'hidden' : ''}" bind:value></textarea>
+
+<style>
+    textarea.hidden{
+        display: none;
+    }
+</style>

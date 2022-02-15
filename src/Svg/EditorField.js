@@ -47,7 +47,6 @@ export default class EditorField {
     freezeMousePosition(){
         this.initMousePosition = this.mousePosition.clone();
         this.initPosition = this.position.clone();
-        console.log(this.initPosition);
     }
 
     freezeZoom() {
@@ -58,9 +57,11 @@ export default class EditorField {
         let dist = -fullOffset.x;
         // let lastZoom = this.zoom;
 
-        // let zoomOffset = this.initMousePosition.clone().add(this.initPosition);
+        // let zoomOffset = this.initMousePosition.clone();
 
-        this.position = this.initPosition.clone().sub(this.initMousePosition);
+        // zoomOffset.y = 0;
+
+        // this.position = this.initPosition.clone().add(zoomOffset);
         if(this.zoom < 1){
             this.zoom = this.previousZoom + dist*this.zoom*0.001;
         } else {
@@ -77,7 +78,10 @@ export default class EditorField {
         // zoomOffset.norm().mul(zoomOffsetLength*this.zoom )
         // mouseFieldPosition.mul(this.zoom - this.previousZoom);
         //
-        this.position.add(this.initMousePosition);
+        // zoomOffset  = this.initMousePosition.clone().mul(this.previousZoom);
+        //
+        // // zoomOffset.y = 0;
+        // this.position.sub(zoomOffset);
 
         return this;
     }

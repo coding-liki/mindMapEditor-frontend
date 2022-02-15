@@ -9,12 +9,22 @@
 	let page = 'index';
 	let map = {
 		nodes: [{
+            id: 1,
 			x: window.innerWidth/2,
 			y: window.innerHeight/2-115,
 			text: "Очень Много Текста",
-            path: "",
-            textElement: null
-		}]
+            borderPath: "",
+            textElement: null,
+            selected: false
+		},{
+            id: 2,
+            x: window.innerWidth/2-220,
+            y: window.innerHeight/2-115,
+            text: "Очень Много Текста",
+            borderPath: "",
+            textElement: null,
+            selected: false
+        }]
 	}
 	let headerButtons = [
 		{

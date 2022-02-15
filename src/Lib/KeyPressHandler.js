@@ -9,7 +9,6 @@ export default class KeyPressHandler{
 
     processUpEvent = (event) =>
     {
-        console.log(event.target);
         this.processPress(event.code);
         this.keyStates[event.code] = false;
     }
