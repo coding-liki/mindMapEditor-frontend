@@ -22,9 +22,8 @@
 	}
 
 	header{
-		display: grid;
-
-		grid-template-columns: 400px repeat(6, 1fr);
+		display: flex;
+		flex: 1;
 	}
 	header button{
 		margin: 10px 5px;

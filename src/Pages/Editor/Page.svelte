@@ -20,13 +20,14 @@
 
     let mode = MOVE_MODE;
     let mouseMode = MOUSE_UP;
-    let viewBoxString = editorField.getViewBoxString();
 
     let mouseDown = (event) => {
         mouseMode = MOUSE_DOWN;
 
         editorField.updateMousePosition(event.offsetX, event.offsetY);
         editorField.freezeMousePosition();
+        editorField = editorField;
+
     }
 
     let mouseUp = (event) => {
@@ -42,11 +43,11 @@
             switch (mode) {
                 case MOVE_MODE:
                     editorField.movePositionByMousePosition();
-                    viewBoxString = editorField.getViewBoxString()
+                    editorField = editorField;
                     break;
                 case ZOOM_MODE:
                     editorField.updateZoomByMousePosition();
-                    viewBoxString = editorField.getViewBoxString()
+                    editorField = editorField;
                     break;
                 default:
                     break;
@@ -57,10 +58,16 @@
     export let svgElement;
 
     let onWindowResize = () => {
-
+        map = map;
+        map.nodes.forEach((node) => {
+            if(node.textElement) {
+                let bBox = node.textElement.getBBox();
+                node.path = pathGenerator.generateBorder(bBox.width*1.2, bBox.height*2, -0.2, 0.4, 24);
+            }
+        });
         if (svgElement) {
             editorField.updateViewBox(svgElement.parentNode.offsetWidth, svgElement.parentNode.offsetHeight);
-            viewBoxString = editorField.getViewBoxString();
+            editorField = editorField;
         }
     }
 
@@ -75,24 +82,13 @@
         }
     }
     let pathGenerator = new RandomGenerator();
-    let path = pathGenerator.generateBorder(100, 50, -0.2, 0.4, 12);
-    let pathPosition = new Vector(100, 100);
-    let pathX = 15;
-    let pathY = 15;
+
     let mousePoint = new Vector(0, 0);
 
-    afterUpdate(() =>{
-        map.nodes.forEach((node) => {
-            if(node.textElement) {
-                let bBox = node.textElement.getBBox();
-                node.path = pathGenerator.generateBorder(bBox.width*1.5, bBox.height*2, -0.2, 0.4, 24);
-            }
-        });
-    });
 </script>
 
 <BasePage bind:enable={enable} on:afterEnabled={()=>{onWindowResize(); }} bind:pageName pageNameSet="Editor">
-    <svg bind:this={svgElement} width="100%" height="100%" viewBox="{viewBoxString}" on:contextmenu={modeToggle}
+    <svg bind:this={svgElement} width="100%"  viewBox="{editorField.getViewBoxString()}" on:contextmenu={modeToggle}
          on:mousedown={mouseDown} on:mouseup={mouseUp} on:mousemove={mouseMove}>
         {#each map.nodes as node}
             <Node x="{node.x}" y="{node.y}" text="{node.text}" borderPath="{node.path}" bind:textElement={node.textElement}/>

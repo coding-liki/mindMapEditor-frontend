@@ -6,24 +6,22 @@
 	let collection = [];
 	function updateCollection(){
 		collection = api.list();
-
-		console.log(collection);
 	}
 </script>
 
 <BasePage bind:enable={enable} bind:pageName pageNameSet="Collection" on:beforeEnabled={updateCollection}>
-	{#await collection}
-		<p>...Загружаем</p>
-	{:then result} 
-		{#each result.maps as mindMap}
-			<map>
-				<id>id = {mindMap.id}</id>
-				<name>name = {mindMap.name}</name>
-			</map>
-		{/each}
-	{:catch error}
-		<p>{error.message}</p>
-	{/await}
+	<!--{#await collection}-->
+	<!--	<p>...Загружаем</p>-->
+	<!--{:then result} -->
+	<!--	&lt;!&ndash;{#each result.maps as mindMap}&ndash;&gt;-->
+	<!--	&lt;!&ndash;	<map>&ndash;&gt;-->
+	<!--	&lt;!&ndash;		<id>id = {mindMap.id}</id>&ndash;&gt;-->
+	<!--	&lt;!&ndash;		<name>name = {mindMap.name}</name>&ndash;&gt;-->
+	<!--	&lt;!&ndash;	</map>&ndash;&gt;-->
+	<!--	&lt;!&ndash;{/each}&ndash;&gt;-->
+	<!--{:catch error}-->
+	<!--	<p>{error.message}</p>-->
+	<!--{/await}-->
 </BasePage>
 
 

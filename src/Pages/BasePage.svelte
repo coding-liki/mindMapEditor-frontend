@@ -10,7 +10,6 @@
     beforeUpdate(() => {
 		if(enable){
             pageName = pageNameSet
-            console.log(pageName, pageNameSet);
         }
 
         if(enable !== lastEnable){
@@ -35,8 +34,15 @@
 </script>
 
 {#if enable}
-<page class="full-parent">
+<page class="">
     <slot></slot>
 </page>
 {/if}
+
+<style>
+    page{
+        display: flex;
+        flex: 10;
+    }
+</style>
 

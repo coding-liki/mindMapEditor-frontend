@@ -11,7 +11,7 @@
 		nodes: [{
 			x: window.innerWidth/2,
 			y: window.innerHeight/2-115,
-			text: "First",
+			text: "Очень Много Текста",
             path: "",
             textElement: null
 		}]
@@ -40,7 +40,7 @@
 
 <style>
 	name{
-		grid-template-columns: 1fr;
+        flex: 1;
 		text-align: center;
 		font-size: 22px;
 		font-weight: 600;
