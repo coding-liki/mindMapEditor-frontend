@@ -1,27 +1,33 @@
 export default class KeyPressHandler{
-    map = {};
+    map = [];
     keyStates = {};
 
+    subscribed = false;
     processDownEvent = (event) => {
         this.keyStates[event.code] = true;
-        console.log(this.keyStates);
     }
 
     processUpEvent = (event) =>
     {
-        this.processPress(event.code);
+        this.processPress(event);
         this.keyStates[event.code] = false;
     }
 
-    subscribe(element) {
+    subscribe() {
+        if(!this.subscribed) {
+            document.addEventListener("keydown", this.processDownEvent)
 
-        document.addEventListener("keydown", this.processDownEvent)
-
-        document.addEventListener("keyup", this.processUpEvent)
+            document.addEventListener("keyup", this.processUpEvent)
+        }
 
     }
 
-    processPress(code) {
+    processPress(event) {
+        let keysUp = Object.keys(this.keyStates).filter((state) => this.keyStates[state]).sort();
+        let handlers = this.map.filter((handler) => handler.keys.sort().toString() === keysUp.toString() );
 
+        handlers.forEach((handler) => {
+            handler.handler(event);
+        })
     }
 }

@@ -15,6 +15,7 @@
 			text: "Очень Много Текста",
             borderPath: "",
             textElement: null,
+            pathElement: null,
             selected: false
 		},{
             id: 2,
@@ -23,6 +24,7 @@
             text: "Очень Много Текста",
             borderPath: "",
             textElement: null,
+            pathElement: null,
             selected: false
         }]
 	}

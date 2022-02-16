@@ -40,7 +40,7 @@
             lastText = node.text;
             if (node.textElement) {
                 let bBox = node.textElement.getBBox();
-                node.borderPath = pathGenerator.generateBorder(bBox.width * 1.2, bBox.height * 2, -0.2, 0.4, 24);
+                node.borderPath = pathGenerator.generateBorder(bBox.width * 1.2, bBox.height * 2, -0.2, 0.4, 21);
             }
         }
     })
@@ -67,12 +67,13 @@
         </text>
     </g>
 
+    pathElement: null,
 
-    <path id="border" on:mousedown={()=>onSelect(node)}  transform="translate({0}, {height/2})" d="{node.borderPath}" stroke="black"
+    <path bind:this={node.pathElement} id="border" on:mousedown={()=>onSelect(node)}  transform="translate(0, {height/2})" d="{node.borderPath}" stroke="black"
           fill="transparent" stroke-width="{node.selected ? 4 : 2}" on:dblclick={() => {edit = !edit; }}/>
-    <foreignObject transform="translate({-width/2}, {-height*2})" width="{width}" height="{height}">
+    <foreignObject transform="translate({-width/2}, {-height*1.5})" width="{width}px" height="{height}px">
         <div xmlns="http://www.w3.org/1999/xhtml">
-            <NodeEditor bind:value={node.text} hidden={!edit}></NodeEditor>
+            <NodeEditor bind:value={node.text} hidden={!edit} width="{width}" height="{height}"></NodeEditor>
         </div>
     </foreignObject>
 </g>

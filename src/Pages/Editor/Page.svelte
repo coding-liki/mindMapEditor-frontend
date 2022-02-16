@@ -5,6 +5,7 @@
     import RandomGenerator from "../../Svg/RandomGenerator"
     import Node from "./Node.svelte";
     import {Vector} from '../../Lib/Math';
+    import KeyPressHandler from "../../Lib/KeyPressHandler";
 
     export let editorField = new EditorField(0, 0);
     export let pageName;
@@ -17,6 +18,7 @@
     const SELECT_MODE = 'select';
     const MOUSE_UP = 'up';
     const MOUSE_DOWN = 'down';
+    const MOUSE_RIGHT = 'right';
 
     let mode = MOVE_MODE;
     let mouseMode = MOUSE_UP;
@@ -29,6 +31,18 @@
             editorField.freezeMousePosition();
             editorField = editorField;
         }
+
+        if(selectedNode) {
+            mousePoint = editorField.mousePosition.clone().add(editorField.position).mul(editorField.zoom);
+
+            let point = svgElement.createSVGPoint();
+            point.x = mousePoint.x - selectedNode.x;
+            point.y = mousePoint.y - selectedNode.y;
+
+            if (!selectedNode.pathElement.isPointInFill(point)) {
+                unselectAll(event);
+            }
+        }
     }
 
     let mouseUp = (event) => {
@@ -37,7 +51,6 @@
     }
 
     let mouseMove = (event) => {
-        console.log("moving");
         editorField.updateMousePosition(event.offsetX, event.offsetY);
         mousePoint = editorField.mousePosition.clone().add(editorField.position).mul(editorField.zoom);
         if (mouseMode === MOUSE_DOWN) {
@@ -52,6 +65,7 @@
                     break;
                 case SELECT_MODE:
                     if(selectedNode){
+
 
                         let diff = editorField.mousePosition.clone().sub(editorField.lastMousePosition);
                         selectedNode.x += diff.x;
@@ -72,7 +86,7 @@
         map.nodes.forEach((node) => {
             if(node.textElement) {
                 let bBox = node.textElement.getBBox();
-                node.borderPath = pathGenerator.generateBorder(bBox.width*1.2, bBox.height*2, -0.2, 0.4, 24);
+                node.borderPath = pathGenerator.generateBorder(bBox.width*1.2, bBox.height*2, -0.2, 0.4, 21);
             }
         });
         if (svgElement) {
@@ -91,8 +105,25 @@
             mode = MOVE_MODE;
         }
     }
-    let pathGenerator = new RandomGenerator();
 
+    let unselectAll = (event) => {
+        if(selectedNode){
+            selectedNode.selected = false;
+            selectedNode = null;
+        }
+
+        map = map;
+    }
+
+    let pathGenerator = new RandomGenerator();
+    let keyboardHandler = new KeyPressHandler();
+    keyboardHandler.map.push({
+        keys: ["Escape"],
+        handler: unselectAll
+    });
+    onMount(()=>{
+        keyboardHandler.subscribe();
+    })
     let mousePoint = new Vector(0, 0);
     // let lastMousePoint = new Vector(0, 0);
 
@@ -109,8 +140,7 @@
         }
     }
 
-    let unselectAll = () => {
-    }
+
 
 </script>
 
@@ -120,8 +150,8 @@
         <button on:click={()=>{ mode = MOVE_MODE}}>Move</button>
         <button on:click={()=>{ mode = SELECT_MODE}}>Select</button>
     </buttons>
-    <svg bind:this={svgElement}  viewBox="{editorField.getViewBoxString()}" on:click={unselectAll}
-         on:mousedown={mouseDown} on:mouseup={mouseUp} on:mousemove={mouseMove}>
+    <svg bind:this={svgElement}  viewBox="{editorField.getViewBoxString()}"
+         on:mousedown={mouseDown} on:mouseup={mouseUp} on:mousemove={mouseMove} on:contextmenu={()=>{mouseMode = MOUSE_RIGHT}}>
         {#each map.nodes as node}
             <Node onSelect="{selectNode}" bind:node={node} bind:id={node.id} bind:x="{node.x}" bind:selected={node.selected} bind:y="{node.y}" bind:text="{node.text}" bind:borderPath="{node.borderPath}" bind:textElement={node.textElement}/>
         {/each}

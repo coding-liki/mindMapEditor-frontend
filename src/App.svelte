@@ -5,13 +5,10 @@
 
     let site;
     let eventsAdded = false;
-    let keyHandler = new KeyPressHandler();
+    // let keyHandler = new KeyPressHandler();
 
     afterUpdate(() => {
-        if (site && !eventsAdded) {
-            keyHandler.subscribe(site);
-            eventsAdded = true;
-        }
+
     })
 </script>
 
