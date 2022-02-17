@@ -7,7 +7,7 @@
     export let value = "";
     export let hidden = true;
 </script>
-    <textarea class="{hidden ? 'hidden' : ''}" bind:value style="width: {width}px; height: {height}px"></textarea>
+    <textarea class="{hidden ? 'hidden' : ''}" bind:value style="width: {width}px; height: {height}px; resize: none;"></textarea>
 
 <style>
 

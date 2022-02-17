@@ -1,6 +1,8 @@
 export class Vector {
     x = 0;
     y = 0;
+    static sinValues = {};
+    static cosValues = {};
     constructor(x = 0,y = 0){
         this.x = x;
         this.y = y;
@@ -44,8 +46,12 @@ export class Vector {
         return this;
     }
     rotate(center, angle){
-        let sin = Math.sin(angle)
-        let cos = Math.cos(angle)
+        if(!Vector.sinValues[angle]){
+            Vector.sinValues[angle] = Math.sin(angle);
+            Vector.cosValues[angle] = Math.cos(angle);
+        }
+        let sin = Vector.sinValues[angle]
+        let cos = Vector.cosValues[angle]
 
         this.sub(center);
 
@@ -63,3 +69,4 @@ export class Vector {
         return new Vector(this.x, this.y);
     }
 }
+

@@ -4,29 +4,39 @@
   import Index from './Index/Page.svelte';
   import Collection from './Collection/Page.svelte';
   import Editor from './Editor/Page.svelte';
+  import EditorField from "../Svg/EditorField";
 
 	let pageName = 'asdasd';
 	let page = 'index';
 	let map = {
-		nodes: [{
-            id: 1,
-			x: window.innerWidth/2,
-			y: window.innerHeight/2-115,
-			text: "Очень Много Текста",
-            borderPath: "",
-            textElement: null,
-            pathElement: null,
-            selected: false
-		},{
-            id: 2,
-            x: window.innerWidth/2-220,
-            y: window.innerHeight/2-115,
-            text: "Очень Много Текста",
-            borderPath: "",
-            textElement: null,
-            pathElement: null,
-            selected: false
-        }]
+		nodes: [
+            EditorField.generateNode(window.innerWidth/2, window.innerHeight/2-115, 1),
+            EditorField.generateNode(window.innerWidth/2-220, window.innerHeight/2-115, 2),
+            EditorField.generateNode(window.innerWidth/2-220, window.innerHeight/2-300, 3),
+        //     {
+        //     id: 1,
+        //     width: 0,
+        //     height: 0,
+		// 	x: window.innerWidth/2,
+		// 	y: window.innerHeight/2-115,
+		// 	text: "Очень Много Текста",
+        //     borderPath: "",
+        //     textElement: null,
+        //     pathElement: null,
+        //     selected: false
+		// },{
+        //     id: 2,
+        //     width: 0,
+        //     height: 0,
+        //     x: window.innerWidth/2-220,
+        //     y: window.innerHeight/2-115,
+        //     text: "Очень Много Текста",
+        //     borderPath: "",
+        //     textElement: null,
+        //     pathElement: null,
+        //     selected: false
+        // }
+        ]
 	}
 	let headerButtons = [
 		{

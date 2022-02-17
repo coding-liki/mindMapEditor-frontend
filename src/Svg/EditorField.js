@@ -86,6 +86,21 @@ export default class EditorField {
         return this;
     }
     
-
+    static generateNode(x,y, id){
+        return {
+            id: id,
+            width: 0,
+            height: 0,
+            x: x,
+            y: y,
+            text: "Новая нода",
+            borderPath: "",
+            textElement: null,
+            pathElement: null,
+            selected: false,
+            needRegen: true,
+            parentId: null,
+        };
+    }
 
 }

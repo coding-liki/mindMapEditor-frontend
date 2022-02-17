@@ -26,6 +26,7 @@ export default class KeyPressHandler{
         let keysUp = Object.keys(this.keyStates).filter((state) => this.keyStates[state]).sort();
         let handlers = this.map.filter((handler) => handler.keys.sort().toString() === keysUp.toString() );
 
+        console.log(keysUp);
         handlers.forEach((handler) => {
             handler.handler(event);
         })

@@ -9,9 +9,6 @@ export default class RandomGenerator {
     generateBorder( width, height,  minAmplitude, maxAmplitude, verges){
         this.minAmplitude = minAmplitude;
         this.maxAmplitude = maxAmplitude;
-
-        let path = document.createElementNS('http://www.w3.org/2000/svg',"path");  
-        let svg = document.createElementNS('http://www.w3.org/2000/svg',"svg");
         
         let a = width/2;
         let b = height/2;
@@ -34,8 +31,13 @@ export default class RandomGenerator {
         for(let alpha = step; alpha < PI2-0.01; alpha += step) {
             let mode = first ? "C" : "S";
             first ? first = false : aPoint = bPoint.clone();
-            
-            bPoint = new Vector(Math.cos(alpha)*a, Math.sin(alpha)*b);
+            if(!Vector.sinValues[alpha] || !Vector.cosValues[alpha]){
+                Vector.sinValues[alpha] = Math.sin(alpha);
+                Vector.cosValues[alpha] = Math.cos(alpha);
+            }
+
+
+            bPoint = new Vector(Vector.cosValues[alpha]*a, Vector.sinValues[alpha]*b);
 
             bBezier = this.generateBezierDot(aPoint, bPoint, "right");
 
