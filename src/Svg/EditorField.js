@@ -99,6 +99,7 @@ export default class EditorField {
             pathElement: null,
             selected: false,
             needRegen: true,
+            needRecalcLink: true,
             parentId: null,
         };
     }

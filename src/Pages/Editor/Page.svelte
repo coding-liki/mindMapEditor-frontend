@@ -28,22 +28,24 @@
                 let bBox = node.textElement.getBBox();
                 node.borderPath = pathGenerator.generateBorder(bBox.width * 1.2, bBox.height * 1.7, -0.2, 0.4, 21);
                 node.needRegen = false;
+                node.needRecalcLink = true;
+                map.nodes.filter((child) => node.id === child.parentId).forEach((child)=>{child.needRecalcLink = true});
             }
             if(!node.parent && node.parentId){
                 node.parent = map.nodes.find((parent) => parent.id === node.parentId);
             }
         })
 
-        // map = map;
+        map = map;
     })
     let mouseDown = (event) => {
         mouseMode = MOUSE_DOWN;
 
-        if (event.button === 2) {
+        // if (event.button === 1) {
             editorField.updateMousePosition(event.offsetX, event.offsetY);
             editorField.freezeMousePosition();
             editorField = editorField;
-        }
+        // }
 
         if (selectedNode) {
             mousePoint = editorField.mousePosition.clone().add(editorField.position).mul(editorField.zoom);
@@ -81,6 +83,10 @@
                         let diff = editorField.mousePosition.clone().sub(editorField.lastMousePosition);
                         selectedNode.x += diff.x;
                         selectedNode.y += diff.y;
+                        selectedNode.needRecalcLink = true;
+                        map.nodes.filter((node) => node.parentId === selectedNode.id).forEach((node) => {
+                            node.needRecalcLink = true;
+                        })
                     }
 
                     let moveDiff = 50;

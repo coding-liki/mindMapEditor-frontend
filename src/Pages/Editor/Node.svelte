@@ -34,13 +34,22 @@
         }
     })
     beforeUpdate(() => {
-        node = node;
         editableText.text = node.text;
         editableText = editableText;
+        if (node.parent &&  node.textElement && node.pathElement && node.parent.pathElement ) {
+            if(node.needRecalcLink) {
+                node.needRecalcLink = false;
+                setTimeout(recalcLink, 50)
+                // node = node;
+            }
+        }
+
         if (lastText !== node.text) {
 
             lastText = node.text;
             if (node.textElement) {
+                node.needRecalcLink = true;
+
                 let bBox = node.textElement.getBBox();
                 let widthRate = bBox.width / lastBbWidth;
 
@@ -49,40 +58,60 @@
                     node.needRegen = true;
                     lastBbWidth = bBox.width;
                     lastBbHeight = bBox.height;
+                    node = node;
                 }
 
             }
         }
 
-        if (node.parent &&  node.textElement && node.pathElement && node.parent.pathElement ) {
-            let parentPosition = new Vector(node.parent.x, node.parent.y)
-            let childPosition = new Vector(node.x, node.y)
 
-            let diff = childPosition.clone().sub(parentPosition);
-
-            let cos = diff.x/diff.length();
-
-            let parentAngle = Math.acos(cos);
-            if(diff.y < 0){
-                parentAngle = Math.PI*2 - parentAngle;
-            }
-            let childAngle = Math.PI + parentAngle;
-
-            let parentPathLength = node.parent.pathElement.getTotalLength()/(Math.PI*2)*parentAngle;
-            let childPathLength = node.pathElement.getTotalLength()/(Math.PI*2)*childAngle;
-
-            let startPos = node.parent.pathElement.getPointAtLength(parentPathLength);
-            // let endPos = node.pathElement.getPointAtLength(childPathLength);
-
-            link = {
-                parent: new Vector(startPos.x+node.parent.x, startPos.y+node.parent.y+node.parent.height/2),
-                child: new Vector(node.x, node.y)
-            }
-            // console.log(link);
-        }
 
         lastUpdate = Date.now().valueOf();
     })
+
+    let recalcLink = () => {
+        node = node;
+        let parentPosition = new Vector(node.parent.x, node.parent.y+node.parent.height/2)
+        let childPosition = new Vector(node.x, node.y+node.height/2)
+
+        let diff = childPosition.clone().sub(parentPosition);
+
+        let cos = diff.x/diff.length();
+
+        let parentAngle = Math.acos(cos);
+        let childAngle = Math.PI + parentAngle;
+
+        if(diff.y < 0){
+            parentAngle = Math.PI*2 - parentAngle;
+        }
+
+        if(diff.y < 0){
+            childAngle =  parentAngle - Math.PI;
+        }
+        console.log(parentAngle, childAngle);
+
+        let parentPathLength = node.parent.pathElement.getTotalLength()/(Math.PI*2)*parentAngle;
+        let childPathLength = node.pathElement.getTotalLength()/(Math.PI*2)*childAngle;
+
+        let startPos = node.parent.pathElement.getPointAtLength(parentPathLength);
+        let endPos = new Vector(node.x, node.y);
+        if(node.pathElement.getAttribute('d')) {
+
+             endPos = node.pathElement.getPointAtLength(childPathLength);
+        } else {
+            node.needRecalcLink = true;
+        }
+        link = {
+            parent: new Vector(startPos.x+node.parent.x, startPos.y+node.parent.y+node.parent.height/2),
+            child: new Vector(endPos.x+node.x, endPos.y+node.y+node.height/2)
+        }
+
+        // link = {
+        //     parent: new Vector(node.parent.x,node.parent.y+node.parent.height/2),
+        //     child: new Vector(node.x,node.y+node.height/2)
+        // }
+    }
+
     afterUpdate(() => {
 
         node = node;
