@@ -66,7 +66,6 @@
             if(diff.y < 0){
                 parentAngle = Math.PI*2 - parentAngle;
             }
-            console.log(parentAngle)
             let childAngle = Math.PI + parentAngle;
 
             let parentPathLength = node.parent.pathElement.getTotalLength()/(Math.PI*2)*parentAngle;
@@ -75,7 +74,6 @@
             let startPos = node.parent.pathElement.getPointAtLength(parentPathLength);
             // let endPos = node.pathElement.getPointAtLength(childPathLength);
 
-            console.log(startPos);
             link = {
                 parent: new Vector(startPos.x+node.parent.x, startPos.y+node.parent.y+node.parent.height/2),
                 child: new Vector(node.x, node.y)
