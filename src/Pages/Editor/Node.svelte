@@ -26,20 +26,22 @@
         node = node;
 
         editableText.text = node.text;
-        editableText = editableText;
         if (node.textElement) {
             editableText.getTSpans().forEach((span) => {
                 node.textElement.children[0].appendChild(span);
             })
         }
+
+        editableText = editableText;
+
     })
     beforeUpdate(() => {
         editableText.text = node.text;
         editableText = editableText;
-        if (node.parent &&  node.textElement && node.pathElement && node.parent.pathElement ) {
-            if(node.needRecalcLink) {
+        if (node.parent  && node.pathElement && node.parent.pathElement) {
+            if (node.needRecalcLink) {
                 node.needRecalcLink = false;
-                setTimeout(recalcLink, 50)
+                setTimeout(recalcLink, 10);
                 // node = node;
             }
         }
@@ -65,58 +67,60 @@
         }
 
 
-
-        lastUpdate = Date.now().valueOf();
     })
 
     let recalcLink = () => {
         node = node;
-        let parentPosition = new Vector(node.parent.x, node.parent.y+node.parent.height/2)
-        let childPosition = new Vector(node.x, node.y+node.height/2)
+        let parentPosition = node.parent.position.clone().addXY(0, node.parent.height / 2);
+        let childPosition = node.position.clone().addXY(0, node.height / 2);
 
         let diff = childPosition.clone().sub(parentPosition);
 
-        let cos = diff.x/diff.length();
+        // if(diff)
+        let cos = diff.x / diff.length();
 
-        let parentAngle = Math.acos(cos);
+        let parentAngle = Vector.acos(cos);
         let childAngle = Math.PI + parentAngle;
 
-        if(diff.y < 0){
-            parentAngle = Math.PI*2 - parentAngle;
+        // console.log(parentAngle)
+        if (diff.y < 0) {
+            parentAngle = Math.PI * 2 - parentAngle;
+        }
+        //
+        if (diff.y < 0) {
+            childAngle = parentAngle - Math.PI;
         }
 
-        if(diff.y < 0){
-            childAngle =  parentAngle - Math.PI;
+
+        let PI2 = 2*Math.PI;
+        let step = PI2/RandomGenerator.vergesCount;
+
+        let pathPosStart = node.parent.pathPoints[(parentAngle - parentAngle%step).toPrecision(5)];
+        let pathPosEnd = node.pathPoints[(childAngle - childAngle%step).toPrecision(5)];
+
+        let startPos = new Vector();
+        let endPos = new Vector();
+
+
+        if(pathPosStart ) {
+            startPos = new Vector(pathPosStart.x, pathPosStart.y);
         }
-        console.log(parentAngle, childAngle);
-
-        let parentPathLength = node.parent.pathElement.getTotalLength()/(Math.PI*2)*parentAngle;
-        let childPathLength = node.pathElement.getTotalLength()/(Math.PI*2)*childAngle;
-
-        let startPos = node.parent.pathElement.getPointAtLength(parentPathLength);
-        let endPos = new Vector(node.x, node.y);
-        if(node.pathElement.getAttribute('d')) {
-
-             endPos = node.pathElement.getPointAtLength(childPathLength);
-        } else {
-            node.needRecalcLink = true;
+        if(pathPosEnd){
+            endPos = new Vector(pathPosEnd.x, pathPosEnd.y);
         }
+
         link = {
-            parent: new Vector(startPos.x+node.parent.x, startPos.y+node.parent.y+node.parent.height/2),
-            child: new Vector(endPos.x+node.x, endPos.y+node.y+node.height/2)
+            parent: startPos.add(node.parent.position).addXY(0, node.parent.height / 2),
+            child: endPos.add(node.position).addXY(0, node.height / 2)
         }
 
-        // link = {
-        //     parent: new Vector(node.parent.x,node.parent.y+node.parent.height/2),
-        //     child: new Vector(node.x,node.y+node.height/2)
-        // }
     }
 
     afterUpdate(() => {
 
         node = node;
 
-        if (node.textElement) {
+        if (node.textElement && node.needRecalcLink) {
             node.textElement.children[0].innerHTML = '';
             editableText.getTSpans().forEach((span) => {
                 node.textElement.children[0].appendChild(span);
@@ -129,15 +133,22 @@
 
 </script>
 
-<g transform="translate({node.x},{node.y})">
+<g transform="translate({node.position.x},{node.position.y})">
+
+    <g class="colorWhite">
+        <path bind:this={node.pathElement} id="border{node.id}"
+              transform="translate(0, {height/2})" d="{node.borderPath}" stroke="black"
+              fill="currentColor" stroke-width="{node.selected ? 4 : 2}"/>
+    </g>
     <g bind:this={node.textElement}>
         <text class="unselectable alexander" text-anchor="middle" font-size="20">
         </text>
     </g>
 
-    <path bind:this={node.pathElement} id="border" on:mousedown={()=>onSelect(node)}
-          transform="translate(0, {height/2})" d="{node.borderPath}" stroke="black"
-          fill="transparent" stroke-width="{node.selected ? 4 : 2}" on:dblclick={() => {edit = !edit; }}/>
+    <g class="colorTransparent">
+        <use xlink:href="#border{node.id}" fill="transparent" on:mousedown={()=>onSelect(node) }
+             on:dblclick={() => {edit = !edit; }}/>
+    </g>
 
     <foreignObject transform="translate({-(width*1.2)/2}, {-height*1.5})" width="{width*1.2+2}px" height="{height}px">
         <div xmlns="http://www.w3.org/1999/xhtml">
@@ -150,5 +161,11 @@
 {/if}
 
 <style>
+    .colorWhite{
+        color: white;
+    }
 
+    .colorTransparent{
+        color: transparent;
+    }
 </style>

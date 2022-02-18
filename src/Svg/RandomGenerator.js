@@ -3,10 +3,11 @@ import { Vector } from "../Lib/Math";
 export default class RandomGenerator {
     minAmplitude = 0;
     maxAmplitude = 1;
+    static vergesCount = 15;
 
     PIHalf = Math.PI/2;
 
-    generateBorder( width, height,  minAmplitude, maxAmplitude, verges){
+    generateBorder( width, height,  minAmplitude, maxAmplitude, verges = RandomGenerator.vergesCount){
         this.minAmplitude = minAmplitude;
         this.maxAmplitude = maxAmplitude;
         
@@ -17,8 +18,8 @@ export default class RandomGenerator {
         let step = PI2/verges;
 
         let first = true;
-        let aPoint = new Vector( Math.cos(0)*a, Math.sin(0)*b);
-        let bPoint = new Vector(Math.cos(step)*a, Math.sin(step)*b);
+        let aPoint = new Vector( Vector.cos(0)*a, Vector.sin(0)*b);
+        let bPoint = new Vector(Vector.cos(step)*a, Vector.sin(step)*b);
 
         let aBezier = this.generateBezierDot(aPoint, bPoint, "left");
         let bBezier = this.generateBezierDot(aPoint, bPoint, "right");
@@ -31,13 +32,9 @@ export default class RandomGenerator {
         for(let alpha = step; alpha < PI2-0.01; alpha += step) {
             let mode = first ? "C" : "S";
             first ? first = false : aPoint = bPoint.clone();
-            if(!Vector.sinValues[alpha] || !Vector.cosValues[alpha]){
-                Vector.sinValues[alpha] = Math.sin(alpha);
-                Vector.cosValues[alpha] = Math.cos(alpha);
-            }
 
 
-            bPoint = new Vector(Vector.cosValues[alpha]*a, Vector.sinValues[alpha]*b);
+            bPoint = new Vector(Vector.cos(alpha)*a, Vector.sin(alpha)*b);
 
             bBezier = this.generateBezierDot(aPoint, bPoint, "right");
 

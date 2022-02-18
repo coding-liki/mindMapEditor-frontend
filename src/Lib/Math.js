@@ -3,6 +3,8 @@ export class Vector {
     y = 0;
     static sinValues = {};
     static cosValues = {};
+    static acosValues = {};
+
     constructor(x = 0,y = 0){
         this.x = x;
         this.y = y;
@@ -18,10 +20,24 @@ export class Vector {
         return this;
     }
 
+    addXY(x,y) {
+        this.x += x;
+        this.y += y;
+
+        return this;
+    }
+
     add(b) {
         this.x += b.x;
         this.y += b.y;
     
+        return this;
+    }
+
+    subXY(x,y) {
+        this.x -= x;
+        this.y -= y;
+
         return this;
     }
 
@@ -46,12 +62,8 @@ export class Vector {
         return this;
     }
     rotate(center, angle){
-        if(!Vector.sinValues[angle]){
-            Vector.sinValues[angle] = Math.sin(angle);
-            Vector.cosValues[angle] = Math.cos(angle);
-        }
-        let sin = Vector.sinValues[angle]
-        let cos = Vector.cosValues[angle]
+        let sin = Vector.sin(angle)
+        let cos = Vector.cos(angle)
 
         this.sub(center);
 
@@ -67,6 +79,30 @@ export class Vector {
 
     clone() {
         return new Vector(this.x, this.y);
+    }
+
+    static sin(angle){
+        if(!Vector.sinValues[angle]){
+            Vector.sinValues[angle] = Math.sin(angle);
+            Vector.cosValues[angle] = Math.cos(angle);
+        }
+        return Vector.sinValues[angle];
+    }
+
+    static cos(angle){
+        if(!Vector.sinValues[angle]){
+            Vector.sinValues[angle] = Math.sin(angle);
+            Vector.cosValues[angle] = Math.cos(angle);
+        }
+        return Vector.cosValues[angle];
+    }
+
+    static acos(value) {
+        if(!Vector.acosValues[value]){
+            Vector.acosValues[value] = Math.acos(value);
+            // Vector.cosValues[angle] = Math.cos(angle);
+        }
+        return Vector.acosValues[value];
     }
 }
 

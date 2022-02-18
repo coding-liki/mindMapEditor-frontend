@@ -91,8 +91,7 @@ export default class EditorField {
             id: id,
             width: 0,
             height: 0,
-            x: x,
-            y: y,
+            position: new Vector(x,y),
             text: "Новая нода",
             borderPath: "",
             textElement: null,
@@ -101,6 +100,8 @@ export default class EditorField {
             needRegen: true,
             needRecalcLink: true,
             parentId: null,
+            totalLength: 0,
+            pathPoints: {}
         };
     }
 
