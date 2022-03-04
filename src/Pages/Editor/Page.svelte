@@ -11,7 +11,8 @@
     export let pageName;
     export let enable = false;
     export let map;
-
+    let mousePoint = new Vector(0, 0);
+    let initMousePoint = new Vector(0, 0);
     const MOVE_MODE = 'move';
     const ZOOM_MODE = 'zoom';
     const SELECT_MODE = 'select';
@@ -26,9 +27,9 @@
 
     let bordersInterval = null;
 
-    function checkEditorBorders() {
-        if (mode === SELECT_MODE) {
-            let mousePoint = editorField.mousePosition.clone().add(editorField.position).mul(editorField.zoom);
+    function checkEditorBorders(event) {
+        if (mode === MOVE_MODE) {
+            mousePoint = editorField.mousePosition.clone().add(editorField.position).mul(editorField.zoom);
 
             let moveDiff = 30;
             let moveStep = moveDiff / 10;
@@ -107,9 +108,9 @@
                 node.parent = map.nodes.find((parent) => parent.id === node.parentId);
             }
         })
-        if (!bordersInterval && mouseMode !== MOUSE_OUT) {
-            // bordersInterval = setInterval(checkEditorBorders, 100);
-        }
+        // if (!bordersInterval && mouseMode !== MOUSE_OUT) {
+        //     // bordersInterval = setInterval(checkEditorBorders, 100);
+        // }
         editorField = editorField;
         map = map;
     })
@@ -122,15 +123,15 @@
         // }
 
         if (selectedNode) {
-            mousePoint = editorField.mousePosition.clone()
+            let curMousePoint = editorField.mousePosition.clone()
                 .add(editorField.position)
                 .mul(editorField.zoom)
                 .sub(selectedNode.position)
                 .subXY(0,selectedNode.height / 2);
 
             let point = svgElement.createSVGPoint();
-            point.x = mousePoint.x ;
-            point.y = mousePoint.y ;
+            point.x = curMousePoint.x ;
+            point.y = curMousePoint.y ;
 
             if (!selectedNode.pathElement.isPointInFill(point)) {
                 unselectAll(event);
@@ -144,11 +145,14 @@
     let mouseUp = (event) => {
         mouseMode = MOUSE_UP;
         editorField.freezeZoom();
+        editorField.freezeMousePosition();
+        editorField = editorField;
+        initMousePoint = editorField.initMousePosition.clone().add(editorField.initPosition).mul(editorField.previousZoom);
     }
 
     let mouseMove = (event) => {
         editorField.updateMousePosition(event.offsetX, event.offsetY);
-        // mousePoint = editorField.mousePosition.clone().add(editorField.position).mul(editorField.zoom);
+        mousePoint = editorField.mousePosition.clone().add(editorField.position).mul(editorField.zoom);
         if (mouseMode === MOUSE_DOWN) {
             switch (mode) {
                 case MOVE_MODE:
@@ -236,7 +240,6 @@
     onMount(() => {
         keyboardHandler.subscribe();
     })
-    let mousePoint = new Vector(0, 0);
 
     let selectedNode = null;
     let selectNode = (node) => {
@@ -264,11 +267,11 @@
     <svg bind:this={svgElement} viewBox="{editorField.getViewBoxString()}"
          on:mousedown={mouseDown} on:mouseup={mouseUp} on:mousemove={mouseMove}
          on:contextmenu={()=>{mouseMode = MOUSE_RIGHT}}
-         on:mouseenter={() => {
+         on:mouseenter={(event) => {
              if(mouseMode === MOUSE_OUT){
                 mouseMode = MOUSE_IN;
                 if (!bordersInterval) {
-                    bordersInterval = setInterval(checkEditorBorders, 10);
+                    bordersInterval = setInterval(checkEditorBorders, 10, event);
                 }
             }
          }}
@@ -277,11 +280,13 @@
              clearInterval(bordersInterval);
              bordersInterval = null;
          }}>
-        <!--        <circle r="5" fill="red" cx="{mousePoint.x}" cy="{mousePoint.y}"/>-->
+<!--                <circle r="5" fill="red" cx="{mousePoint.x}" cy="{mousePoint.y}"/>-->
+<!--        <circle r="5" fill="blue" cx="{initMousePoint.x}" cy="{initMousePoint.y}"/>-->
         {#each map.nodes as node}
             <Node onSelect="{selectNode}" bind:node={node} bind:width={node.width} bind:height={node.height}/>
         {/each}
-        <!--        <circle r="5" fill="green" cx="{editorField.initPosition.x}" cy="{editorField.initPosition.y}"/>-->
+<!--                <circle r="5" fill="green" cx="{editorField.initPosition.x}" cy="{editorField.initPosition.y}"/>-->
+<!--        <circle r="5" fill="green" cx="0" cy="0"/>-->
     </svg>
 
 </BasePage>

@@ -78,10 +78,12 @@ export default class EditorField {
         // zoomOffset.norm().mul(zoomOffsetLength*this.zoom )
         // mouseFieldPosition.mul(this.zoom - this.previousZoom);
         //
-        // zoomOffset  = this.initMousePosition.clone().mul(this.previousZoom);
+        // let initPositionZoomed = this.initPosition.clone().mul(this.previousZoom/this.zoom);
         //
-        // // zoomOffset.y = 0;
-        // this.position.sub(zoomOffset);
+        // let zoomOffset  = this.initMousePosition.clone().mul(this.previousZoom).sub(this.initMousePosition.clone().add(this.initPosition).mul(this.previousZoom/this.zoom));//.add(this.initPosition);
+        // //
+        // // // zoomOffset.y = 0;
+        // this.position = this.initPosition.clone().sub(zoomOffset)//.sub(initPositionZoomed);
 
         return this;
     }

@@ -5,7 +5,8 @@
 	export let enable = false;
 	let collection = [];
 	function updateCollection(){
-		collection = api.list();
+		// collection = api.list();
+
 	}
 </script>
 

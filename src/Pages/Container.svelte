@@ -5,9 +5,13 @@
     import Collection from './Collection/Page.svelte';
     import Editor from './Editor/Page.svelte';
     import EditorField from "../Svg/EditorField";
+    import BaseModal from "./Collection/Modal/BaseModal.svelte";
+    import LoginRegister from "./Collection/Modal/LoginRegister.svelte";
 
     let pageName = 'asdasd';
     let page = 'index';
+
+    let modalOpen = false;
     let map = {
         nodes: [
             EditorField.generateNode(window.innerWidth / 2, window.innerHeight / 2 - 115, 1),
@@ -32,10 +36,11 @@
 </script>
 
 <Header {headerButtons} bind:page/>
-<name>{pageName}</name>
+<name on:click={() => {modalOpen = true;}}>{pageName}</name>
 <Index enable={ page==="index"} bind:pageName/>
 <Collection enable={ page==="collection"} bind:pageName/>
 <Editor enable={page === "editor"} bind:map bind:pageName/>
+<LoginRegister bind:isOpen={modalOpen}/>
 
 <style>
     name {

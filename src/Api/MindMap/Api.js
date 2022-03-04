@@ -1,15 +1,14 @@
 import BaseApiClass from "../BaseApiClass.js";
-export let endpoint = "http://jsondbback.vinylcoding.ru";
 
-class MindMapApi extends BaseApiClass{
-    constructor(endpoint){
-        super(endpoint, 'test');
+export let endpoint = "http://server.vinilla-mind-map.ru";
+
+class MindMapApi extends BaseApiClass {
+    constructor(endpoint) {
+        super(endpoint, 'mind-map');
     }
 
-    async list(){
-        return await this.post('get', {
-            id: 1
-        });
+    async getAll() {
+        return await this.post('get-all');
     }
 }
 

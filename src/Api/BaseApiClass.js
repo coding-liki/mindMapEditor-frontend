@@ -1,5 +1,4 @@
-export default class BaseApiClass
-{
+export default class BaseApiClass {
     constructor(endpoint, controller) {
         this.endpoint = endpoint;
         this.controller = controller;
@@ -11,17 +10,17 @@ export default class BaseApiClass
         };
     }
 
-    async  request(method, params = {}, httpMethod) {
+    async request(method, params = {}, httpMethod) {
         let options = {
             method: httpMethod,
             headers: this.buildHeaders(),
-            body: JSON.stringify({params:params})
+            body: JSON.stringify({params: params})
         };
 
-        let response = await fetch(this.endpoint+'/'+this.controller+'/'+method, options);
+        let response = await fetch(this.endpoint + '/' + this.controller + '/' + method, options);
         let result = await response.json();
 
-        if(response.ok){
+        if (response.ok) {
             return result;
         } else {
             throw Error(result);
@@ -29,19 +28,19 @@ export default class BaseApiClass
 
     }
 
-        async  get(method, params= {}){
+    async get(method, params = {}) {
         return await this.request(method, params, 'GET');
     }
 
-        async  post(method, params= {}){
+    async post(method, params = {}) {
         return await this.request(method, params, 'POST');
     }
 
-        async  put(method, params= {}){
+    async put(method, params = {}) {
         return await this.request(method, params, 'PUT');
     }
 
-        async  del(method, params= {}){
+    async del(method, params = {}) {
         return await this.request(method, params, 'DELETE');
     }
 }
