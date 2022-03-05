@@ -21,7 +21,7 @@ class AuthApi extends BaseApiClass{
         })
     }
 
-    async check(login, password){
+    async check(){
         return await this.post('check', {
         })
     }

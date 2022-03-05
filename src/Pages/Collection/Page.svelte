@@ -1,16 +1,21 @@
 <script>
 	import BasePage from "../BasePage.svelte";
-	import {api} from "../../Api/MindMap/Api.js";
+	// import {api} from "../../Api/MindMap/Api.js";
+	import LoginRegister from "./Modal/LoginRegister.svelte";
+	import AuthService from "../../Lib/AuthService";
 	export let pageName;
 	export let enable = false;
 	let collection = [];
+	let authService = new AuthService();
+	let modalOpen = false;
 	function updateCollection(){
-		// collection = api.list();
-
+		authService.check();
 	}
 </script>
 
 <BasePage bind:enable={enable} bind:pageName pageNameSet="Collection" on:beforeEnabled={updateCollection}>
+	<LoginRegister bind:isOpen={modalOpen}/>
+
 	<!--{#await collection}-->
 	<!--	<p>...Загружаем</p>-->
 	<!--{:then result} -->

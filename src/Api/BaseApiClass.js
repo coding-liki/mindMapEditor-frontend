@@ -1,3 +1,7 @@
+import LocalStorage from "../Lib/LocalStorage";
+
+export const AUTH_TOKEN_KEY = 'auth_token'
+
 export default class BaseApiClass {
     constructor(endpoint, controller) {
         this.endpoint = endpoint;
@@ -5,9 +9,16 @@ export default class BaseApiClass {
     }
 
     buildHeaders() {
-        return {
+        let headers = {
             'Content-Type': 'application/json;charset=utf-8'
-        };
+        }
+
+        let authToken = LocalStorage.get(AUTH_TOKEN_KEY);
+        if (authToken) {
+            headers.Authorization = 'Bearer ' + authToken;
+        }
+
+        return headers;
     }
 
     async request(method, params = {}, httpMethod) {
@@ -18,12 +29,16 @@ export default class BaseApiClass {
         };
 
         let response = await fetch(this.endpoint + '/' + this.controller + '/' + method, options);
-        let result = await response.json();
+        console.log(response.status);
+
+        let result = await response.catch((error) => {
+            console.log("response", error);
+        }).json();
 
         if (response.ok) {
             return result;
         } else {
-            throw Error(result);
+            throw Error(response, result);
         }
 
     }

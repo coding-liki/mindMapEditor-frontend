@@ -40,7 +40,6 @@
 <Index enable={ page==="index"} bind:pageName/>
 <Collection enable={ page==="collection"} bind:pageName/>
 <Editor enable={page === "editor"} bind:map bind:pageName/>
-<LoginRegister bind:isOpen={modalOpen}/>
 
 <style>
     name {
