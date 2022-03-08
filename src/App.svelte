@@ -1,11 +1,9 @@
 <script>
     import Container from './Pages/Container.svelte';
     import {afterUpdate} from "svelte";
-    import KeyPressHandler from "./Lib/KeyPressHandler";
 
     let site;
     let eventsAdded = false;
-    // let keyHandler = new KeyPressHandler();
 
     afterUpdate(() => {
 

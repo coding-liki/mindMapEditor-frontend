@@ -3,10 +3,13 @@
 
     import Index from './Index/Page.svelte';
     import Collection from './Collection/Page.svelte';
-    import Editor from './Editor/Page.svelte';
+    import Editor from './Editor/PageNew.svelte';
     import EditorField from "../Svg/EditorField";
     import BaseModal from "./Collection/Modal/BaseModal.svelte";
     import LoginRegister from "./Collection/Modal/LoginRegister.svelte";
+    import {EventDispatcher} from "../Lib/EventDispatcher";
+    import {PAGE} from "../Lib/Constants/EventDispatcherNames";
+    import {PAGE_SET_NAME, PageEnabledBefore} from "../Lib/Constants/Events";
 
     let pageName = 'asdasd';
     let page = 'index';
@@ -19,15 +22,23 @@
             EditorField.generateNode(window.innerWidth / 2 - 220, window.innerHeight / 2 - 300, 3)
         ]
     }
+
+    let pageDispatcher = EventDispatcher.instance(PAGE);
+
+    pageDispatcher.subscribe(PAGE_SET_NAME, (event)=>{
+        pageName = event.pageVisibleName;
+    })
     let headerButtons = [
         {
             name: "Collection",
-            page: "collection"
+            clickHandler: () => {
+                pageDispatcher.dispatch(new PageEnabledBefore('collection'))
+            }
         },
         {
             name: "New Map",
             clickHandler: () => {
-                page = 'editor'
+                pageDispatcher.dispatch(new PageEnabledBefore('editor'))
             }
         }
     ];
@@ -37,9 +48,9 @@
 
 <Header {headerButtons} bind:page/>
 <name on:click={() => {modalOpen = true;}}>{pageName}</name>
-<Index enable={ page==="index"} bind:pageName/>
-<Collection enable={ page==="collection"} bind:pageName/>
-<Editor enable={page === "editor"} bind:map bind:pageName/>
+<Index enable={true} bind:pageName/>
+<!--<Collection enable={ page==="collection"} bind:pageName/>-->
+<Editor  bind:map bind:pageName/>
 
 <style>
     name {

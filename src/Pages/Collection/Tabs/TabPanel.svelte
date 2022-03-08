@@ -1,5 +1,5 @@
 <script>
-    import EventDispatcher from "../../../Lib/EventDispatcher";
+    import {EventDispatcher} from "../../../Lib/EventDispatcher";
 
     let active = false;
     export let name;

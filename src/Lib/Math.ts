@@ -1,74 +1,81 @@
 export class Vector {
-    x = 0;
-    y = 0;
-    static sinValues = {};
-    static cosValues = {};
-    static acosValues = {};
+    x: number = 0;
+    y: number = 0;
+    z: number = 0;
+    static sinValues: number[string] = {};
+    static cosValues: number[string] = {};
+    static acosValues: number[string] = {};
 
-    constructor(x = 0,y = 0){
+    constructor(x: number = 0, y: number = 0, z: number = 0) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
-    length(){
-        return Math.sqrt(this.x*this.x+this.y*this.y);
+    length(): number {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z*this.z);
     }
 
-    norm() {
+    norm(): Vector {
         this.div(this.length());
 
         return this;
     }
 
-    addXY(x,y) {
+    addXY(x: number, y: number): Vector {
         this.x += x;
         this.y += y;
 
         return this;
     }
 
-    add(b) {
+    add(b: Vector): Vector {
         this.x += b.x;
         this.y += b.y;
-    
+        this.z += b.z;
+
         return this;
     }
 
-    subXY(x,y) {
+    subXY(x: number, y: number): Vector {
         this.x -= x;
         this.y -= y;
 
         return this;
     }
 
-    sub (b) {
+    sub(b: Vector): Vector {
         this.x -= b.x;
         this.y -= b.y;
+        this.z -= b.z;
 
         return this;
     }
 
-    mul (scalar) {
+    mul(scalar: number): Vector {
         this.x *= scalar;
         this.y *= scalar;
-    
+        this.z *= scalar;
+
         return this;
     }
 
-    div(scalar) {
+    div(scalar: number): Vector {
         this.x /= scalar;
         this.y /= scalar;
+        this.z /= scalar;
 
         return this;
     }
-    rotate(center, angle){
+
+    rotate(center: Vector, angle: number): Vector {
         let sin = Vector.sin(angle)
         let cos = Vector.cos(angle)
 
         this.sub(center);
 
-        let newX = this.x*cos - this.y*sin;
-        let newY = this.x*sin + this.y*cos;
+        let newX = this.x * cos - this.y * sin;
+        let newY = this.x * sin + this.y * cos;
 
         this.x = newX;
         this.y = newY;
@@ -77,30 +84,29 @@ export class Vector {
         return this;
     }
 
-    clone() {
-        return new Vector(this.x, this.y);
+    clone(): Vector {
+        return new Vector(this.x, this.y, this.z);
     }
 
-    static sin(angle){
-        if(!Vector.sinValues[angle]){
+    static sin(angle: number): number {
+        if (!Vector.sinValues[angle]) {
             Vector.sinValues[angle] = Math.sin(angle);
             Vector.cosValues[angle] = Math.cos(angle);
         }
         return Vector.sinValues[angle];
     }
 
-    static cos(angle){
-        if(!Vector.sinValues[angle]){
+    static cos(angle: number): number {
+        if (!Vector.sinValues[angle]) {
             Vector.sinValues[angle] = Math.sin(angle);
             Vector.cosValues[angle] = Math.cos(angle);
         }
         return Vector.cosValues[angle];
     }
 
-    static acos(value) {
-        if(!Vector.acosValues[value]){
+    static acos(value: number): number {
+        if (!Vector.acosValues[value]) {
             Vector.acosValues[value] = Math.acos(value);
-            // Vector.cosValues[angle] = Math.cos(angle);
         }
         return Vector.acosValues[value];
     }

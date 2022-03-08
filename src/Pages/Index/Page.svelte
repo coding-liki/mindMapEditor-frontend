@@ -5,7 +5,7 @@
 
 </script>
 
-<BasePage bind:enable={enable} bind:pageName pageNameSet="Index">
+<BasePage pageVisibleName="Index" bind:enable={enable} pageName='index'>
 	<index> this is index </index>
 </BasePage>
 
