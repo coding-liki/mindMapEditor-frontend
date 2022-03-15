@@ -18,7 +18,6 @@ export class PageEnabledBefore implements Event {
     pageName: string;
 
     constructor(pageName: string) {
-        // super();
         this.pageName = pageName;
     }
 }
@@ -29,7 +28,6 @@ export class PageDisabledBefore implements Event {
     pageName: string;
 
     constructor(pageName: string) {
-        // super();
         this.pageName = pageName;
     }
 }
@@ -40,7 +38,6 @@ export class PageEnabledAfter implements Event {
     pageName: string;
 
     constructor(pageName: string) {
-        // super();
         this.pageName = pageName;
     }
 }
@@ -51,7 +48,6 @@ export class PageDisabledAfter implements Event {
     pageName: string;
 
     constructor(pageName: string) {
-        // super();
         this.pageName = pageName;
     }
 }
@@ -61,7 +57,6 @@ export class PageSetName implements Event{
 
     pageVisibleName: string;
     constructor(pageVisibleName: string) {
-        // super();
         this.pageVisibleName = pageVisibleName;
     }
 }

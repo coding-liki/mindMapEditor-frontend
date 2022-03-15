@@ -89,22 +89,22 @@ export default class EditorField {
     }
     
     static generateNode(x,y, id){
-        return {
-            id: id,
-            width: 0,
-            height: 0,
-            position: new Vector(x,y),
-            text: "Новая нода",
-            borderPath: "",
-            textElement: null,
-            pathElement: null,
-            selected: false,
-            needRegen: true,
-            needRecalcLink: true,
-            parentId: null,
-            totalLength: 0,
-            pathPoints: {}
-        };
+        // return {
+        //     id: id,
+        //     width: 0,
+        //     height: 0,
+        //     position: new Vector(x,y),
+        //     text: "Новая нода",
+        //     borderPath: "",
+        //     textElement: null,
+        //     pathElement: null,
+        //     selected: false,
+        //     needRegen: true,
+        //     needRecalcLink: true,
+        //     parentId: null,
+        //     totalLength: 0,
+        //     pathPoints: {}
+        // };
     }
 
 }

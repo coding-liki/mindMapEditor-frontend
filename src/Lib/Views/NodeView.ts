@@ -1,5 +1,5 @@
 import {Link} from "../Models/Link";
-import {Node} from "../Models/Node";
+import type {Node} from "../Models/Node";
 
 export class NodeView {
     node: Node;

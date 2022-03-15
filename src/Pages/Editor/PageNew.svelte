@@ -78,7 +78,7 @@
     }
 
     function zoom(event) {
-        let delta = event.deltaY * (-0.0003);
+        let delta = event.deltaY * (-0.0009);
         camera.zoom(mousePosition, delta);
         viewPort = camera.getViewPort();
 
@@ -123,7 +123,7 @@
         <circle cx="0" cy="0" r="5" fill="red"/>
         <circle cx="10" cy="10" r="5" fill="red"/>
         {#each map.nodes as node }
-            <NodeNew node={node}/>
+            <NodeNew nodeView={node}/>
         {/each}
     </svg>
 </BasePage>

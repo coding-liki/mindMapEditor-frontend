@@ -1,5 +1,5 @@
-import {fn1, fnObjectVoid} from "./Helpers/Types";
-import {Event} from "./Constants/Events";
+import type {fn1} from "./Helpers/Types";
+import type {Event} from "./Constants/Events";
 type eventCallback = fn1<Event, void>;
 
 export class EventDispatcher {

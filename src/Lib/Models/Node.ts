@@ -1,5 +1,5 @@
-import {Vector} from "../Math";
-import MindMap from "./MindMap";
+import type {Vector} from "../Math";
+import type MindMap from "./MindMap";
 import {LinkType} from "./Link";
 
 export class Node {

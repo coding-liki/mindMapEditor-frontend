@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Header from './Header.svelte';
 
     import Index from './Index/Page.svelte';
@@ -10,22 +10,24 @@
     import {EventDispatcher} from "../Lib/EventDispatcher";
     import {PAGE} from "../Lib/Constants/EventDispatcherNames";
     import {PAGE_SET_NAME, PageEnabledBefore} from "../Lib/Constants/Events";
+    import RandomGenerator from "../Svg/RandomGenerator";
 
     let pageName = 'asdasd';
     let page = 'index';
 
     let modalOpen = false;
+
     let map = {
         nodes: [
-            EditorField.generateNode(window.innerWidth / 2, window.innerHeight / 2 - 115, 1),
-            EditorField.generateNode(window.innerWidth / 2 - 220, window.innerHeight / 2 - 115, 2),
-            EditorField.generateNode(window.innerWidth / 2 - 220, window.innerHeight / 2 - 300, 3)
+            RandomGenerator.generateNode(0, -115, 1),
+            RandomGenerator.generateNode(-220, -115, 2),
+            RandomGenerator.generateNode(-220, -300, 3)
         ]
     }
 
     let pageDispatcher = EventDispatcher.instance(PAGE);
 
-    pageDispatcher.subscribe(PAGE_SET_NAME, (event)=>{
+    pageDispatcher.subscribe(PAGE_SET_NAME, (event) => {
         pageName = event.pageVisibleName;
     })
     let headerButtons = [
@@ -50,7 +52,7 @@
 <name on:click={() => {modalOpen = true;}}>{pageName}</name>
 <Index enable={true} bind:pageName/>
 <!--<Collection enable={ page==="collection"} bind:pageName/>-->
-<Editor  bind:map bind:pageName/>
+<Editor bind:map bind:pageName/>
 
 <style>
     name {
