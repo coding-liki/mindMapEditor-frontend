@@ -9,7 +9,7 @@ export default class RandomGenerator {
 
     PIHalf: number = Math.PI / 2;
 
-    generateBorder(width: number, height: number, minAmplitude: number, maxAmplitude: number, verges: number = RandomGenerator.vergesCount) {
+    generateBorder(width: number, height: number, minAmplitude: number, maxAmplitude: number, verges: number = RandomGenerator.vergesCount): string {
         this.minAmplitude = minAmplitude;
         this.maxAmplitude = maxAmplitude;
 
@@ -26,13 +26,13 @@ export default class RandomGenerator {
         let aBezier: Vector = this.generateBezierDot(aPoint, bPoint, "left");
         let bBezier: Vector = this.generateBezierDot(aPoint, bPoint, "right");
 
-        let firstBezier = aBezier.clone();
-        let firstDot = aPoint.clone();
+        let firstBezier: Vector = aBezier.clone();
+        let firstDot: Vector = aPoint.clone();
 
-        let pathText = "M" + a + " 0 ";
+        let pathText: string = "M" + a + " 0 ";
 
-        for (let alpha = step; alpha < PI2 - 0.01; alpha += step) {
-            let mode = first ? "C" : "S";
+        for (let alpha: number = step; alpha < PI2 - 0.01; alpha += step) {
+            let mode: string = first ? "C" : "S";
             first ? first = false : aPoint = bPoint.clone();
 
 
@@ -66,20 +66,20 @@ export default class RandomGenerator {
         }
     }
 
-    generateCPart(aBezier, bBezier, b) {
+    generateCPart(aBezier: Vector, bBezier: Vector, b: Vector): string {
         return " C" + aBezier.x + " " + aBezier.y + " ," + bBezier.x + " " + bBezier.y + " ," + b.x + " " + b.y;
     }
 
-    generateSPart(bBezier, b) {
+    generateSPart(bBezier: Vector, b: Vector): string {
         return " S" + bBezier.x + " " + bBezier.y + " ," + b.x + " " + b.y;
     }
 
-    static generateNode(x: number, y: number, id: number): NodeView{
+    static generateNode(x: number, y: number, id: number, text: string = 'Новая Нода'): NodeView {
         let view: NodeView = new NodeView();
         let node: Node = new Node();
         node.id = id;
-        node.text = 'new node';
-        node.position = new Vector(x,y);
+        node.text = text;
+        node.position = new Vector(x, y);
 
         view.node = node;
         return view;

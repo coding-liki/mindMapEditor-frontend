@@ -1,17 +1,17 @@
-const SVG_NS = "http://www.w3.org/2000/svg";
+const SVG_NS: string = "http://www.w3.org/2000/svg";
 
 export default class EditableText {
-    text = "";
+    text: string = "";
 
-    getTSpans() {
-        let lines = this.text.split("\n");
-        let tSpans = [];
-        let first = true;
+    getTSpans(): Element[] {
+        let lines: string[] = this.text.split("\n");
+        let tSpans: Element[] = [];
+        let first: boolean = true;
         lines.forEach((line) => {
             let tSpan = document.createElementNS(SVG_NS, "tspan");
             tSpan.textContent = line;
             tSpan.setAttributeNS(null, 'x', "0");
-            if(first){
+            if (first) {
                 first = false;
                 tSpan.setAttributeNS(null, 'y', "1em");
             } else {

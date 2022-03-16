@@ -12,6 +12,7 @@ export const PAGE_DISABLED_BEFORE = 'pageDisabledBefore';
 export const PAGE_ENABLED_AFTER = 'pageEnabledAfter';
 export const PAGE_DISABLED_AFTER = 'pageDisabledAfter';
 export const PAGE_SET_NAME = 'pageSetName';
+
 export class PageEnabledBefore implements Event {
     name = PAGE_ENABLED_BEFORE;
 
@@ -52,12 +53,28 @@ export class PageDisabledAfter implements Event {
     }
 }
 
-export class PageSetName implements Event{
+export class PageSetName implements Event {
     name: string = PAGE_SET_NAME;
 
     pageVisibleName: string;
+
     constructor(pageVisibleName: string) {
         this.pageVisibleName = pageVisibleName;
     }
 }
+
+/*****************************************/
+
+/************** Node Events **************/
+export const NODE_UPDATE_TEXT = 'nodeUpdateText';
+
+export class NodeUpdateText implements Event {
+    name: string = NODE_UPDATE_TEXT;
+    nodeId: number;
+
+    constructor(nodeId: number) {
+        this.nodeId = nodeId;
+    }
+}
+
 /*****************************************/

@@ -60,10 +60,10 @@
         mouseEvent = event;
 
         // lastMousePosition = mousePosition.clone();
-        updateMousePosition();
 
         if (mouseState === MOUSE_STATE_DOWN) {
             processMouseMove();
+            // updateMousePosition();
         }
     }
 
@@ -78,9 +78,9 @@
     }
 
     function zoom(event) {
-        let delta = event.deltaY * (-0.0009);
+        let delta = event.deltaY * (-0.0015);
         camera.zoom(mousePosition, delta);
-        viewPort = camera.getViewPort();
+        viewPort = camera.getViewPort()
 
         updateMousePosition()
     }

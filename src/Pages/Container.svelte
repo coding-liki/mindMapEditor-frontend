@@ -17,11 +17,25 @@
 
     let modalOpen = false;
 
+    let firstNode = RandomGenerator.generateNode(0, -115, 1, "Новая Нода\nОчень длинный текст на второй строчке\n")
+    let secondNode = RandomGenerator.generateNode(-220, -115, 2, "Новая Нода\nОчень длинный текст на второй строчке\nb\nловрфыпаоыр\n,asd nfska,dfn,\n")
+    let thirdNode = RandomGenerator.generateNode(-220, -300, 3, "Новая Нода\nb\nловрфыпаоыр\n,asd nfska,dfn,\nОчень длинный текст на последадфы лволдфыао дфыл адфыловажней строчке")
+
+    thirdNode.node.parentNode = firstNode.node;
+    thirdNode.node.parentLinkNode = firstNode.node;
+
+    secondNode.node.parentNode = firstNode.node;
+    secondNode.node.parentLinkNode = firstNode.node;
+
+    firstNode.updateLink();
+    secondNode.updateLink();
+    thirdNode.updateLink();
+
     let map = {
         nodes: [
-            RandomGenerator.generateNode(0, -115, 1),
-            RandomGenerator.generateNode(-220, -115, 2),
-            RandomGenerator.generateNode(-220, -300, 3)
+            firstNode,
+            secondNode,
+            thirdNode
         ]
     }
 
