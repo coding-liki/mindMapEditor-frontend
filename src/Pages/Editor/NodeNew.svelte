@@ -2,7 +2,7 @@
     import {afterUpdate, beforeUpdate} from "svelte";
     import {EventDispatcher} from "../../Lib/EventDispatcher";
     import {NODE} from "../../Lib/Constants/EventDispatcherNames";
-    import {NODE_UPDATE_TEXT} from "../../Lib/Constants/Events";
+    import {NODE_UPDATE_TEXT, NodeStartEdit} from "../../Lib/Constants/Events";
     import NodeEditor from "./NodeEditor.svelte";
 
     export let nodeView;
@@ -16,8 +16,8 @@
        if(event.nodeId !== nodeView.node.id){
            return;
        }
-
         nodeView.refillText();
+        nodeView = nodeView;
     });
 
 
@@ -29,14 +29,19 @@
     });
 </script>
 
-<!--{#if nodeView}-->
+{#if nodeView}
 <g bind:this={nodeView.nodeElement} transform="translate({nodeView.node.position.x},{nodeView.node.position.y})">
+
+    <g class="colorWhite">
+        <path id="border{nodeView.node.id}"
+              transform="translate(0, {(nodeView.nodeTextHeight+6)/2})" d="{nodeView.nodePath}" stroke="black"
+              fill="currentColor" stroke-width="2"/>
+    </g>
 
     <g transform="translate(0, {(nodeView.nodeTextHeight+6)/2})">
         {#if nodeView.nodePath}
 
             <path
-                    on:dblclick={() => {edit = !edit; }}
                     stroke="black"
                     fill="white" stroke-width="2"
                     d="{nodeView.nodePath}"/>
@@ -46,14 +51,16 @@
         <text class="unselectable alexander" text-anchor="middle" font-size="20">
         </text>
     </g>
-    <foreignObject transform="translate({-(nodeView.nodeTextWidth*1.2)/2}, {-nodeView.nodeTextHeight*1.5})" width="{nodeView.nodeTextWidth*1.2+2}px" height="{nodeView.nodeTextHeight}px">
-        <div xmlns="http://www.w3.org/1999/xhtml">
-            <NodeEditor bind:value={nodeView.node.text} hidden={!edit} width="{nodeView.nodeTextWidth*1.2}" height="{nodeView.nodeTextHeight}"/>
-        </div>
-    </foreignObject>
-    <circle r="3" cx="0" cy="0" fill="red"/>
+    <g class="colorTransparent">
+        <use xlink:href="#border{nodeView.node.id}" fill="transparent"
+             on:dblclick={() => {
+                 console.log('dbclicked');
+                 eventDispatcher.dispatch(new NodeStartEdit(nodeView));
+             }}/>
+    </g>
+
 </g>
-<!--{/if}-->
+{/if}
 <style>
     .colorWhite {
         color: white;

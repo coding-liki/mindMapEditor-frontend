@@ -2,6 +2,8 @@
 //     getName(): string;
 // }
 
+import {NodeView} from "../Views/NodeView";
+
 export interface Event {
     name: string;
 }
@@ -12,6 +14,7 @@ export const PAGE_DISABLED_BEFORE = 'pageDisabledBefore';
 export const PAGE_ENABLED_AFTER = 'pageEnabledAfter';
 export const PAGE_DISABLED_AFTER = 'pageDisabledAfter';
 export const PAGE_SET_NAME = 'pageSetName';
+export const PAGE_UPDATED = 'pageUpdated';
 
 export class PageEnabledBefore implements Event {
     name = PAGE_ENABLED_BEFORE;
@@ -63,10 +66,21 @@ export class PageSetName implements Event {
     }
 }
 
+export class PageUpdated implements Event {
+    name: string = PAGE_UPDATED;
+
+    pageName: string;
+
+    constructor(pageName: string) {
+        this.pageName = pageName;
+    }
+}
+
 /*****************************************/
 
 /************** Node Events **************/
 export const NODE_UPDATE_TEXT = 'nodeUpdateText';
+export const NODE_START_EDIT = 'nodeStartEdit';
 
 export class NodeUpdateText implements Event {
     name: string = NODE_UPDATE_TEXT;
@@ -76,5 +90,15 @@ export class NodeUpdateText implements Event {
         this.nodeId = nodeId;
     }
 }
+
+export class NodeStartEdit implements Event {
+    name: string = NODE_START_EDIT;
+    nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        this.nodeView = nodeView;
+    }
+}
+
 
 /*****************************************/

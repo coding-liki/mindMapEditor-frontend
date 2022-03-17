@@ -23,6 +23,7 @@ export class NodeView {
     }
 
     regeneratePath(): NodeView {
+        console.log('regen', this.node.id);
         if(this.nodeElement) {
             let textElement: SVGGraphicsElement = this.nodeElement.querySelector('.text');
             let bBox = textElement.getBBox();
