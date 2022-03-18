@@ -1,4 +1,4 @@
-import {fn1} from "./Helpers/Types";
+import type {fn1} from "./Helpers/Types";
 
 type handlerCallback = fn1<KeyboardEvent, void>;
 
@@ -9,6 +9,7 @@ export class Handler {
 
 export class KeyPressHandler {
     map = [];
+    // @ts-ignore
     keyStates: boolean[string] = {};
 
     subscribed: boolean = false;
@@ -29,6 +30,11 @@ export class KeyPressHandler {
         }
 
     }
+
+    pressed(code: string): boolean{
+        return this.keyStates[code];
+    }
+
 
     processPress(event: KeyboardEvent) {
         let keysUp = Object.keys(this.keyStates).filter((state: string) => this.keyStates[state]).sort();

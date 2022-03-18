@@ -1,5 +1,5 @@
 import {Vector} from "../../Lib/Math";
-import {StateProcessor} from "./StateProcessor";
+import type {StateProcessor} from "./StateProcessor";
 
 export class MouseProcessor {
     mousePosition: Vector = new Vector();
@@ -30,7 +30,6 @@ export class MouseProcessor {
     mouseMove(event) {
         this.lastMouseEvent = this.mouseEvent;
         this.mouseEvent = event;
-
 
         if (this.mouseState === MouseProcessor.MOUSE_STATE_DOWN) {
             this.processMouseMove();

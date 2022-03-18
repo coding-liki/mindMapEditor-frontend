@@ -6,28 +6,38 @@
     import {StateProcessor} from "../../Processors/Editor/StateProcessor";
     import {MouseProcessor} from "../../Processors/Editor/MouseProcessor";
     import {EventDispatcher} from "../../Lib/EventDispatcher";
-    import {PAGE} from "../../Lib/Constants/EventDispatcherNames";
-    import {PAGE_UPDATED} from "../../Lib/Constants/Events";
+    import {NODE, PAGE} from "../../Lib/Constants/EventDispatcherNames";
+    import {NODE_START_EDIT, PAGE_UPDATED} from "../../Lib/Constants/Events";
 
     export let map;
     let stateProcessor = new StateProcessor();
     let mouseProcessor = new MouseProcessor(stateProcessor);
 
-    let pageDispatcher = EventDispatcher.instance(PAGE)
+    let nodeDispatcher = EventDispatcher.instance(NODE)
 
-    pageDispatcher.subscribe(PAGE_UPDATED, (event) => {
-        if(event.pageName === "editor"){
-            console.log('myUpdate');
-        }
+    nodeDispatcher.subscribe(NODE_START_EDIT, (event) => {
+        stateProcessor = stateProcessor;
     })
+    //
+    // pageDispatcher.subscribe(PAGE_UPDATED, (event) => {
+    //     if(event.pageName === "editor"){
+    //         console.log('myUpdate');
+    //     }
+    // })
     onMount(() => {
         stateProcessor.init();
+        window.onresize = () => {
+            stateProcessor.onWindowResize();
+            stateProcessor = stateProcessor;
+
+        }
+
     })
 
 
     beforeUpdate(() => {
-        // stateProcessor = stateProcessor;
         stateProcessor.beforeUpdate();
+        stateProcessor = stateProcessor;
     })
 
 </script>

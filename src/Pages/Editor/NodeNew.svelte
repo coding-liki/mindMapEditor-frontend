@@ -1,9 +1,9 @@
 <script>
-    import {afterUpdate, beforeUpdate} from "svelte";
+    import {beforeUpdate, onMount} from "svelte";
     import {EventDispatcher} from "../../Lib/EventDispatcher";
     import {NODE} from "../../Lib/Constants/EventDispatcherNames";
     import {NODE_UPDATE_TEXT, NodeStartEdit} from "../../Lib/Constants/Events";
-    import NodeEditor from "./NodeEditor.svelte";
+    import {KeyPressHandler} from "../../Lib/KeyPressHandler";
 
     export let nodeView;
 
@@ -11,6 +11,7 @@
     let edit = false;
 
     let eventDispatcher = EventDispatcher.instance(NODE);
+    let keyboardHandler = new KeyPressHandler();
 
     eventDispatcher.subscribe(NODE_UPDATE_TEXT, (event) => {
        if(event.nodeId !== nodeView.node.id){
@@ -27,6 +28,9 @@
             generated = true;
         }
     });
+    onMount(() => {
+        keyboardHandler.subscribe();
+    })
 </script>
 
 {#if nodeView}

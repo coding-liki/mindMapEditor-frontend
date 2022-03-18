@@ -7,8 +7,10 @@
     export let width;
     export let height;
     export let value = "";
+    let lastValue = null;
     export let hidden = true;
     export let nodeId;
+    let lastNodeId;
     let lastHidden = true;
 
     let textArea;
@@ -23,10 +25,13 @@
             }
             lastHidden = hidden;
         }
+        if(lastValue !== value && lastNodeId === nodeId) {
+            eventDispatcher.dispatch(new NodeUpdateText(nodeId));
+        }
 
-        eventDispatcher.dispatch(new NodeUpdateText(nodeId));
-
-        console.log(value)
+        lastValue = value;
+        lastNodeId = nodeId;
+        console.log(value);
     })
 </script>
 <textarea bind:this={textArea} class="{hidden ? 'hidden' : ''}" bind:value

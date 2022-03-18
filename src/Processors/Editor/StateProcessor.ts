@@ -1,7 +1,7 @@
 import {Camera} from "../../Lib/Svg/Editor/Camera";
 import {ViewPort} from "../../Lib/Svg/Editor/ViewPort";
 import {Vector} from "../../Lib/Math";
-import {NodeView} from "../../Lib/Views/NodeView";
+import type {NodeView} from "../../Lib/Views/NodeView";
 import {EventDispatcher} from "../../Lib/EventDispatcher";
 import {NODE, PAGE} from "../../Lib/Constants/EventDispatcherNames";
 import {NODE_START_EDIT, NodeStartEdit, PAGE_ENABLED_AFTER, PageEnabledAfter} from "../../Lib/Constants/Events";
@@ -38,13 +38,13 @@ export class StateProcessor {
 
 
         this.onWindowResize();
-        window.onresize = this.onWindowResize;
     }
 
     onWindowResize() {
         if (this.svgNode) {
             let computedStyle = getComputedStyle(document.body);
 
+            // @ts-ignore
             let editorRect = this.svgNode.parentNode.getBoundingClientRect();
             let width = document.body.offsetWidth - editorRect.left - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
             let height = document.body.offsetHeight - editorRect.top - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
